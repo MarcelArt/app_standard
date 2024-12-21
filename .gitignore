@@ -21,3 +21,5 @@
 go.work
 
 docs/*
+
+.env
