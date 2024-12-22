@@ -6,3 +6,7 @@ run: swag
 
 watch: swag
 	@air
+
+scaffolder:
+	@go run main.go scaffold ${model}
+	make swag
