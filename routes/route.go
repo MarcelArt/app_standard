@@ -17,6 +17,7 @@ func SetupRoutes(app *fiber.App) {
 		DeepLinking: false,
 	}))
 
-	SetupTemplateRoutes(app)
-	SetupProcessRoutes(app)
+	api := app.Group("/api")
+	SetupTemplateRoutes(api)
+	SetupProcessRoutes(api)
 }

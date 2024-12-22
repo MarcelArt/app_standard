@@ -23,7 +23,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 // @host localhost:8080
-// @BasePath /
+// @BasePath /api
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
@@ -59,6 +59,9 @@ func cmdManager(args []string) {
 			os.Exit(0)
 		}
 		scaffolder(args[2])
+	default:
+		fmt.Println("Unknown command")
+		os.Exit(0)
 	}
 }
 
