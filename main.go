@@ -66,5 +66,7 @@ func cmdManager(args []string) {
 }
 
 func scaffolder(modelName string) {
-	scaffold.ScaffoldModel(modelName)
+	modelCamel := scaffold.ToCamelCase(modelName)
+	modelSnake := scaffold.ToSeparateByCharLowered(modelCamel, '_')
+	scaffold.ScaffoldModel(modelName, modelCamel, modelSnake)
 }

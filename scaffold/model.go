@@ -11,7 +11,7 @@ package models
 
 import "gorm.io/gorm"
 
-const ${modelLower}TableName = "${modelPlural}"
+const ${modelCamel}TableName = "${modelPlural}"
 
 type ${modelName} struct {
 	gorm.Model
@@ -28,20 +28,18 @@ type ${modelName}Page struct {
 }
 
 func (${modelName}DTO) TableName() string {
-	return ${modelLower}TableName
+	return ${modelCamel}TableName
 }
 
 `
 
-func ScaffoldModel(modelName string) {
-	modelLower := strings.ToLower(modelName)
-	modelPlural := modelName + "s" // need to handle other english plural grammar
-
-	newModel := strings.ReplaceAll(modelTemplate, "${modelLower}", modelLower)
+func ScaffoldModel(modelName string, modelCamel string, modelSnake string) {
+	modelPlural := PluralizeWord(modelSnake)
+	newModel := strings.ReplaceAll(modelTemplate, "${modelCamel}", modelCamel)
 	newModel = strings.ReplaceAll(newModel, "${modelPlural}", modelPlural)
 	newModel = strings.ReplaceAll(newModel, "${modelName}", modelName)
 
-	filename := fmt.Sprintf("models/%s.model.go", modelLower)
+	filename := fmt.Sprintf("models/%s.model.go", modelSnake)
 	if err := os.WriteFile(filename, []byte(newModel), 0644); err != nil {
 		panic("Failed writing model file")
 	}
