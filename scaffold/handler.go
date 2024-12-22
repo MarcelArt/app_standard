@@ -1,6 +1,7 @@
 package scaffold
 
 import (
+	"log"
 	"os"
 	"strings"
 )
@@ -108,6 +109,9 @@ func (h *${modelName}Handler) GetByID(c *fiber.Ctx) error {
 `
 
 func ScaffoldHandler(modelName string, handlerRoute string) {
+	filename := "handlers/api/" + ToSeparateByCharLowered(modelName, '_') + ".handler.go"
+	log.Printf("Generating handler file: %s", filename)
+
 	swagLower := ToSeparateByCharLowered(modelName, ' ')
 	swagPlural := PluralizeWord(swagLower)
 	newHandler := handlerTemplate
@@ -117,7 +121,6 @@ func ScaffoldHandler(modelName string, handlerRoute string) {
 	newHandler = strings.ReplaceAll(newHandler, "${handlerRoute}", handlerRoute)
 	newHandler = strings.ReplaceAll(newHandler, "${moduleName}", moduleName)
 
-	filename := "handlers/api/" + ToSeparateByCharLowered(modelName, '_') + ".handler.go"
 	if err := os.WriteFile(filename, []byte(newHandler), 0644); err != nil {
 		panic("Failed writing handler file")
 	}

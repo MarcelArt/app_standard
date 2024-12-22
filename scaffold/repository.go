@@ -2,6 +2,7 @@ package scaffold
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 )
@@ -35,12 +36,14 @@ func New${modelName}Repo(db *gorm.DB) *${modelName}Repo {
 `
 
 func ScaffoldRepo(modelName string, modelCamel string) {
+	filename := fmt.Sprintf("repositories/%s.repo.go", ToSeparateByCharLowered(modelName, '_'))
+	log.Printf("Generating repo file: %s", filename)
+
 	newRepo := repoTemplate
 	newRepo = strings.ReplaceAll(newRepo, "${modelCamel}", modelCamel)
 	newRepo = strings.ReplaceAll(newRepo, "${modelName}", modelName)
 	newRepo = strings.ReplaceAll(newRepo, "${moduleName}", moduleName)
 
-	filename := fmt.Sprintf("repositories/%s.repo.go", ToSeparateByCharLowered(modelName, '_'))
 	if err := os.WriteFile(filename, []byte(newRepo), 0644); err != nil {
 		panic("Failed writing repo file")
 	}

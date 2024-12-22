@@ -73,4 +73,5 @@ func scaffolder(modelName string) {
 	scaffold.ScaffoldRepo(modelName, modelCamel)
 	scaffold.ScaffoldHandler(modelName, handlerRoute)
 	scaffold.ScaffoldRoute(modelName, handlerRoute)
+	log.Println("Successfully scaffolded")
 }

@@ -1,6 +1,7 @@
 package scaffold
 
 import (
+	"log"
 	"os"
 	"strings"
 )
@@ -28,11 +29,13 @@ func Setup${modelName}Routes(api fiber.Router) {
 `
 
 func ScaffoldRoute(modelName string, handlerRoute string) {
+	filename := "routes/" + ToSeparateByCharLowered(modelName, '_') + ".route.go"
+	log.Printf("Generating route file: %s", filename)
+
 	newRoute := strings.ReplaceAll(routeTemplate, "${modelName}", modelName)
 	newRoute = strings.ReplaceAll(newRoute, "${handlerRoute}", handlerRoute)
 	newRoute = strings.ReplaceAll(newRoute, "${moduleName}", moduleName)
 
-	filename := "routes/" + ToSeparateByCharLowered(modelName, '_') + ".route.go"
 	if err := os.WriteFile(filename, []byte(newRoute), 0644); err != nil {
 		panic("Failed writing route file")
 	}
