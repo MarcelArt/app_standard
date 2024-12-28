@@ -1,17 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
 
-	"github.com/MarcelArt/app_standard/config"
+	"github.com/MarcelArt/app_standard/cmd"
 	_ "github.com/MarcelArt/app_standard/config"
-	"github.com/MarcelArt/app_standard/database"
 	_ "github.com/MarcelArt/app_standard/docs"
-	"github.com/MarcelArt/app_standard/routes"
-	"github.com/MarcelArt/app_standard/scaffold"
-	"github.com/gofiber/fiber/v2"
 )
 
 // @title Fiber Example API
@@ -31,47 +25,47 @@ func main() {
 	args := os.Args
 	argsLength := len(args)
 	if argsLength > 1 {
-		cmdManager(args)
+		cmd.Manager(args)
 	} else {
-		serve()
+		cmd.Serve()
 	}
 
 }
 
-func serve() {
-	database.ConnectDB()
+// func serve() {
+// 	database.ConnectDB()
 
-	app := fiber.New()
+// 	app := fiber.New()
 
-	routes.SetupRoutes(app)
+// 	routes.SetupRoutes(app)
 
-	log.Printf("Listening to http://localhost:%s", config.Env.PORT)
-	log.Fatal(app.Listen(fmt.Sprintf(":%s", config.Env.PORT)))
-}
+// 	log.Printf("Listening to http://localhost:%s", config.Env.PORT)
+// 	log.Fatal(app.Listen(fmt.Sprintf(":%s", config.Env.PORT)))
+// }
 
-func cmdManager(args []string) {
-	argsLength := len(args)
-	fn := args[1]
-	switch fn {
-	case "scaffold":
-		if argsLength < 3 {
-			fmt.Println("Please input model name")
-			os.Exit(0)
-		}
-		scaffolder(args[2])
-	default:
-		fmt.Println("Unknown command")
-		os.Exit(0)
-	}
-}
+// func cmdManager(args []string) {
+// 	argsLength := len(args)
+// 	fn := args[1]
+// 	switch fn {
+// 	case "scaffold":
+// 		if argsLength < 3 {
+// 			fmt.Println("Please input model name")
+// 			os.Exit(0)
+// 		}
+// 		scaffolder(args[2])
+// 	default:
+// 		fmt.Println("Unknown command")
+// 		os.Exit(0)
+// 	}
+// }
 
-func scaffolder(modelName string) {
-	modelCamel := scaffold.ToCamelCase(modelName)
-	modelSnake := scaffold.ToSeparateByCharLowered(modelCamel, '_')
-	handlerRoute := scaffold.ToSeparateByCharLowered(modelName, '-')
-	scaffold.ScaffoldModel(modelName, modelCamel, modelSnake)
-	scaffold.ScaffoldRepo(modelName, modelCamel)
-	scaffold.ScaffoldHandler(modelName, handlerRoute)
-	scaffold.ScaffoldRoute(modelName, handlerRoute)
-	log.Println("Successfully scaffolded")
-}
+// func scaffolder(modelName string) {
+// 	modelCamel := scaffold.ToCamelCase(modelName)
+// 	modelSnake := scaffold.ToSeparateByCharLowered(modelCamel, '_')
+// 	handlerRoute := scaffold.ToSeparateByCharLowered(modelName, '-')
+// 	scaffold.ScaffoldModel(modelName, modelCamel, modelSnake)
+// 	scaffold.ScaffoldRepo(modelName, modelCamel)
+// 	scaffold.ScaffoldHandler(modelName, handlerRoute)
+// 	scaffold.ScaffoldRoute(modelName, handlerRoute)
+// 	log.Println("Successfully scaffolded")
+// }
