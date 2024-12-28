@@ -1,11 +1,12 @@
 package api_handlers
 
 import (
+	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/gofiber/fiber/v2"
 )
 
-type BaseCrudHandler[TModel any, TDto any, TPage any] struct {
+type BaseCrudHandler[TModel any, TDto models.IDTO, TPage any] struct {
 	repo repositories.IBaseCrudRepo[TModel, TDto, TPage]
 }
 
@@ -16,11 +17,12 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
-	if err := h.repo.Create(&dto); err != nil {
+	id, err := h.repo.Create(dto)
+	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(dto)
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"ID": id})
 }
 
 // Read retrieves a list of resources

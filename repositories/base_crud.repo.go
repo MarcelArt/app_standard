@@ -1,35 +1,36 @@
 package repositories
 
 import (
+	"github.com/MarcelArt/app_standard/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/morkid/paginate"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
-type IBaseCrudRepo[TModel any, TDto any, TPage any] interface {
-	Create(input *TDto) error
+type IBaseCrudRepo[TModel any, TDto models.IDTO, TPage any] interface {
+	Create(input TDto) (uint, error)
 	Read(c *fiber.Ctx, dest []TPage) paginate.Page
 	Update(id string, input *TDto) error
 	Delete(id string) (TModel, error)
 	GetByID(id string) (TModel, error)
 }
 
-type BaseCrudRepo[TModel any, TDto any, TPage any] struct {
+type BaseCrudRepo[TModel any, TDto models.IDTO, TPage any] struct {
 	db        *gorm.DB
 	pageQuery string
 }
 
-func NewBaseCrudRepo[TModel any, TDto any, TPage any](db *gorm.DB) *BaseCrudRepo[TModel, TDto, TPage] {
+func NewBaseCrudRepo[TModel any, TDto models.IDTO, TPage any](db *gorm.DB) *BaseCrudRepo[TModel, TDto, TPage] {
 	return &BaseCrudRepo[TModel, TDto, TPage]{
 		db: db,
 	}
 }
 
-func (r *BaseCrudRepo[TModel, TDto, TPage]) Create(input *TDto) error {
+func (r *BaseCrudRepo[TModel, TDto, TPage]) Create(input TDto) (uint, error) {
 	err := r.db.Create(&input).Error
 
-	return err
+	return input.GetID(), err
 }
 
 func (r *BaseCrudRepo[TModel, TDto, TPage]) Read(c *fiber.Ctx, dest []TPage) paginate.Page {
