@@ -10,6 +10,8 @@ type View map[string]string
 
 type PageView struct {
 	paginate.Page
-	Items   []View   `json:"items"`
-	Columns []string `json:"columns"`
+	Items       []View   `json:"items"`
+	Columns     []string `json:"columns"`
+	Title       string
+	Description string
 }

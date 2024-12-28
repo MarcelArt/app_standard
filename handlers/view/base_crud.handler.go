@@ -11,7 +11,9 @@ import (
 )
 
 type BaseCrudHandler[TModel any, TDto models.IDTO, TPage models.IViewable] struct {
-	repo repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	repo     repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	PageName string
+	PageDesc string
 }
 
 func (h *BaseCrudHandler[TModel, TDto, TPage]) Index(c *fiber.Ctx) error {
@@ -36,9 +38,11 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Index(c *fiber.Ctx) error {
 	}
 
 	response := models.PageView{
-		Page:    page,
-		Items:   items,
-		Columns: columns,
+		Page:        page,
+		Items:       items,
+		Columns:     columns,
+		Title:       h.PageName,
+		Description: h.PageDesc,
 	}
 
 	return utils.Render(c, base_crud.Index(response))
