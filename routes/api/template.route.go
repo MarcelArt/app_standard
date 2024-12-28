@@ -1,4 +1,4 @@
-package routes
+package api_routes
 
 import (
 	"github.com/MarcelArt/app_standard/database"
@@ -7,10 +7,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupProcessRoutes(api fiber.Router) {
-	h := api_handlers.NewProcessHandler(repositories.NewProcessRepo(database.GetDB()))
+func SetupTemplateRoutes(api fiber.Router) {
+	h := api_handlers.NewTemplateHandler(repositories.NewTemplateRepo(database.GetDB()))
 
-	g := api.Group("/process")
+	g := api.Group("/template")
+
 	g.Get("/", h.Read)
 	g.Get("/:id", h.GetByID)
 	g.Post("/", h.Create)

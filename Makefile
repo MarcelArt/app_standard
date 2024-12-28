@@ -1,5 +1,8 @@
-make swag:
+swag:
 	@swag init --parseInternal --parseDependency
+
+templ:
+	@templ generate
 
 run: swag
 	@go run main.go

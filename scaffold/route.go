@@ -7,7 +7,7 @@ import (
 )
 
 const routeTemplate = `
-package routes
+package api_routes
 
 import (
 	"${moduleName}/database"
@@ -29,7 +29,7 @@ func Setup${modelName}Routes(api fiber.Router) {
 `
 
 func ScaffoldRoute(modelName string, handlerRoute string) {
-	filename := "routes/" + ToSeparateByCharLowered(modelName, '_') + ".route.go"
+	filename := "routes/api/" + ToSeparateByCharLowered(modelName, '_') + ".route.go"
 	log.Printf("Generating route file: %s", filename)
 
 	newRoute := strings.ReplaceAll(routeTemplate, "${modelName}", modelName)

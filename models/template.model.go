@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -21,10 +23,22 @@ type TemplatePage struct {
 	Name string `gorm:"not null" json:"name"`
 }
 
+func (m TemplatePage) ToView() View {
+	return View{
+		"ID":   fmt.Sprintf("%d", m.ID),
+		"Name": fmt.Sprintf("%s", m.Name),
+	}
+}
+
 func (TemplateDTO) TableName() string {
 	return templateTableName
 }
 
-// func (TemplatePage) TableName() string {
-// 	return templateTableName
-// }
+func (m TemplateDTO) ToView() View {
+	return View{
+		"id":         fmt.Sprintf("%d", m.ID),
+		"name":       fmt.Sprintf("%s", m.Name),
+		"created_at": fmt.Sprintf("%s", m.CreatedAt),
+		"updated_at": fmt.Sprintf("%s", m.UpdatedAt),
+	}
+}
