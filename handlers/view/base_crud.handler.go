@@ -1,8 +1,6 @@
 package view_handlers
 
 import (
-	"log"
-
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/MarcelArt/app_standard/utils"
@@ -10,18 +8,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type BaseCrudHandler[TModel any, TDto models.IDTO, TPage models.IViewable] struct {
-	repo     repositories.IBaseCrudRepo[TModel, TDto, TPage]
-	PageName string
-	PageDesc string
+type BaseCrudHandler[TModel any, TDto models.Formable, TPage models.IViewable] struct {
+	repo      repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	PageName  string
+	PageDesc  string
+	PageRoute string
 }
 
 func (h *BaseCrudHandler[TModel, TDto, TPage]) Index(c *fiber.Ctx) error {
 	var dest []TPage
 
 	page := h.repo.Read(c, dest)
-
-	log.Println(page.Items)
 
 	datas, ok := page.Items.(*[]TPage)
 	if !ok {
@@ -45,5 +42,36 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Index(c *fiber.Ctx) error {
 		Description: h.PageDesc,
 	}
 
-	return utils.Render(c, base_crud.Index(response))
+	return utils.Render(c, base_crud.Index(response, h.PageRoute))
+}
+
+func (h *BaseCrudHandler[TModel, TDto, TPage]) CreateView(c *fiber.Ctx) error {
+	var dto TDto
+
+	inputForm := dto.ToView()
+
+	return utils.Render(c, base_crud.Create(inputForm, h.PageRoute))
+}
+
+func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
+	var dto TDto
+
+	inputForm := dto.ToView()
+	for key, value := range inputForm {
+		inputForm[key] = c.FormValue(key, value)
+	}
+
+	input, err := dto.FromView(inputForm)
+	if err != nil {
+		return c.Redirect(h.PageRoute)
+	}
+
+	dto, ok := input.(TDto)
+	if !ok {
+		return c.Redirect(h.PageRoute)
+	}
+
+	h.repo.Create(dto)
+
+	return c.Redirect(h.PageRoute)
 }

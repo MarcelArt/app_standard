@@ -4,6 +4,7 @@ import "time"
 
 type IDTO interface {
 	GetID() uint
+	FromView(view View) (IDTO, error)
 }
 
 type DTO struct {

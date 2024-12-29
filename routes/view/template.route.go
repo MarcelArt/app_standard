@@ -12,4 +12,7 @@ func SetupTemplateRoutes(app *fiber.App) {
 
 	h := view_handlers.NewTemplateHandler(repositories.NewTemplateRepo(database.GetDB()))
 	g.Get("/", h.Index)
+	g.Get("/create", h.CreateView)
+
+	g.Post("/create", h.Create)
 }

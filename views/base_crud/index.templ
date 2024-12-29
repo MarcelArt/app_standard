@@ -2,8 +2,10 @@ package base_crud
 
 import "github.com/MarcelArt/app_standard/models"
 import "github.com/MarcelArt/app_standard/views/layout"
+import "fmt"
 
-templ Index(page models.PageView) {
+templ Index(page models.PageView, route string) {
+    {{ finalRoute := fmt.Sprintf("%s/create", route) }}
     @layout.Main() {
         <div class="overflow-x-auto">
             <div class="mb-4">
@@ -11,7 +13,7 @@ templ Index(page models.PageView) {
                 <p class="text-gray-700">{page.Description}</p>
             </div>
             <div class="flex justify-end mb-4">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" hx-get={finalRoute} hx-target="#create-modal">
                     Create New
                 </button>
             </div>
@@ -43,6 +45,7 @@ templ Index(page models.PageView) {
                 </tbody>
             </table>
         </div>
+        <div id="create-modal"></div>
     }
     
 }

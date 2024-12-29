@@ -12,9 +12,10 @@ type TemplateHandler struct {
 func NewTemplateHandler(repo repositories.ITemplateRepo) *TemplateHandler {
 	return &TemplateHandler{
 		BaseCrudHandler: BaseCrudHandler[models.Template, models.TemplateDTO, models.TemplatePage]{
-			repo:     repo,
-			PageName: "Template",
-			PageDesc: "Template Description",
+			repo:      repo,
+			PageName:  "Template",
+			PageDesc:  "Template Description",
+			PageRoute: "/template",
 		},
 	}
 }
