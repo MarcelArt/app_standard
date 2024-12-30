@@ -90,14 +90,14 @@ func Index(page models.PageView, route string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			for _, column := range page.Columns {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<th class=\"w-1/3 px-4 py-2\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<th class=\"px-4 py-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(column)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/base_crud/index.templ`, Line: 24, Col: 63}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/base_crud/index.templ`, Line: 24, Col: 57}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -108,7 +108,7 @@ func Index(page models.PageView, route string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<th class=\"w-1/4 px-4 py-2\">Actions</th></tr></thead> <tbody class=\"text-gray-700\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<th class=\"w-2/12 px-4 py-2\">Actions</th></tr></thead> <tbody class=\"text-gray-700\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -118,14 +118,14 @@ func Index(page models.PageView, route string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				for _, column := range page.Columns {
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<td class=\"w-1/3 px-4 py-2 border\">")
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<td class=\"px-4 py-2 border\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item[column])
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/base_crud/index.templ`, Line: 33, Col: 80}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/base_crud/index.templ`, Line: 33, Col: 74}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
@@ -136,7 +136,7 @@ func Index(page models.PageView, route string) templ.Component {
 						return templ_7745c5c3_Err
 					}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<td class=\"w-1/4 px-4 py-2 border\"><button class=\"bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded mr-2\">Edit</button> <button class=\"bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded\">Delete</button></td></tr>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<td class=\"w-2/12 px-4 py-2 border\"><button class=\"bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded mr-2\">Edit</button> <button class=\"bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded\">Delete</button></td></tr>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

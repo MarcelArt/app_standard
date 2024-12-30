@@ -24,6 +24,7 @@ func SetupRoutes(app *fiber.App) {
 
 	app.Get("/", view_handlers.HelloWorldView)
 	view_routes.SetupTemplateRoutes(app)
+	view_routes.SetupProcessRoutes(app)
 
 	api := app.Group("/api")
 	api_routes.SetupTemplateRoutes(api)

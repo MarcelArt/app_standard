@@ -2,9 +2,14 @@ package base_crud
 
 import "github.com/MarcelArt/app_standard/models"
 import "fmt"
+import "reflect"
 
 templ Create(inputForm models.View, route string) {
-    {{ finalRoute := templ.SafeURL(fmt.Sprintf("%s/create", route)) }}
+    {{ 
+        finalRoute := templ.SafeURL(fmt.Sprintf("%s/create", route)) 
+        var dto interface{}
+        t := reflect.TypeOf(dto)
+    }}
     <div id="create-modal-cancel" class="fixed z-10 inset-0 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">

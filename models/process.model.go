@@ -11,18 +11,21 @@ const processTableName = "processes"
 
 type Process struct {
 	gorm.Model
-	TemplateID uint `json:"templateId"`
+	Name       string `json:"name"`
+	TemplateID uint   `json:"templateId"`
 
 	Template *Template `json:"template"`
 }
 
 type ProcessDTO struct {
 	DTO
-	TemplateID uint `json:"templateId"`
+	Name       string `json:"name" field:"display=name,key=name"`
+	TemplateID uint   `json:"templateId" field:"display=name,key=name"`
 }
 
 type ProcessPage struct {
 	ID           uint   `gorm:"primarykey"`
+	Name         string `json:"name"`
 	TemplateID   uint   `json:"templateId"`
 	TemplateName string `json:"templateName"`
 }
@@ -34,12 +37,14 @@ func (ProcessDTO) TableName() string {
 func (m ProcessPage) ToView() View {
 	return View{
 		"ID":         fmt.Sprintf("%d", m.ID),
+		"Name":       fmt.Sprintf("%s", m.Name),
 		"TemplateID": fmt.Sprintf("%d", m.TemplateID),
 	}
 }
 
 func (m ProcessDTO) ToView() View {
 	return View{
+		"Name":       fmt.Sprintf("%s", m.Name),
 		"TemplateID": fmt.Sprintf("%d", m.TemplateID),
 	}
 }
