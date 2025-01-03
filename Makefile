@@ -10,3 +10,9 @@ watch: swag
 scaffolder:
 	@go run main.go scaffold ${model}
 	make swag
+
+migrate-up:
+	@go run main.go migrate up
+
+migrate-down:
+	@go run main.go migrate down

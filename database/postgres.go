@@ -32,7 +32,7 @@ func ConnectDB() {
 
 	fmt.Println("Connection Opened to Database")
 
-	MigrateDB()
+	// MigrateDB()
 }
 
 func GetDB() *gorm.DB {
@@ -45,4 +45,12 @@ func MigrateDB() {
 		models.Process{},
 	)
 	fmt.Println("Database Migrated")
+}
+
+func DropDB() {
+	db.Migrator().DropTable(
+		&models.Template{},
+		&models.Process{},
+	)
+	fmt.Println("Database Droped")
 }
