@@ -1,4 +1,4 @@
-make swag:
+swag:
 	@swag init --parseInternal --parseDependency
 
 run: swag
