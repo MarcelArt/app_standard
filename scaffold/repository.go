@@ -29,7 +29,7 @@ func New${modelName}Repo(db *gorm.DB) *${modelName}Repo {
 	return &${modelName}Repo{
 		BaseCrudRepo: BaseCrudRepo[models.${modelName}, models.${modelName}DTO, models.${modelName}Page]{
 			db:        db,
-			pageQuery: processPageQuery,
+			pageQuery: ${modelCamel}PageQuery,
 		},
 	}
 }
