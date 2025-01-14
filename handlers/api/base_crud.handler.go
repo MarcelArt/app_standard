@@ -3,11 +3,14 @@ package api_handlers
 import (
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
+	"github.com/MarcelArt/app_standard/utils"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 type BaseCrudHandler[TModel any, TDto models.IDTO, TPage any] struct {
-	repo repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	repo      repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	validator *validator.Validate
 }
 
 func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
@@ -17,9 +20,13 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
+	if err := h.validator.Struct(dto); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
 	id, err := h.repo.Create(dto)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"ID": id})
@@ -31,7 +38,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
 // @Tags CRUDs
 // @Accept json
 // @Produce json
-// @Param resources path string true "Resource route" Enums(template, process)
+// @Param resources path string true "Resource route" Enums(user, authorized-device)
 // @Param page query int false "Page"
 // @Param size query int false "Size"
 // @Param sort query string false "Sort"
@@ -55,8 +62,12 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Update(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
+	if err := h.validator.Struct(dto); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
 	if err := h.repo.Update(id, &dto); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(dto)
@@ -68,7 +79,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Delete(c *fiber.Ctx) error {
 	model, err := h.repo.Delete(id)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(model)
@@ -80,7 +91,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) GetByID(c *fiber.Ctx) error {
 	model, err := h.repo.GetByID(id)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(model)

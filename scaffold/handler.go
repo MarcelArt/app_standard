@@ -12,18 +12,22 @@ package api_handlers
 import (
 	"${moduleName}/models"
 	"${moduleName}/repositories"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 type ${modelName}Handler struct {
 	BaseCrudHandler[models.${modelName}, models.${modelName}DTO, models.${modelName}Page]
+	repo repositories.I${modelName}Repo
 }
 
 func New${modelName}Handler(repo repositories.I${modelName}Repo) *${modelName}Handler {
 	return &${modelName}Handler{
 		BaseCrudHandler: BaseCrudHandler[models.${modelName}, models.${modelName}DTO, models.${modelName}Page]{
 			repo: repo,
+			validator: validator.New(validator.WithRequiredStructEnabled()),
 		},
+		repo: repo,
 	}
 }
 
