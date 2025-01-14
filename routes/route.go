@@ -26,4 +26,5 @@ func SetupRoutes(app *fiber.App) {
 	SetupTemplateRoutes(api)
 	SetupProcessRoutes(api)
 	SetupUserRoutes(api, authMiddleware)
+	SetupAuthorizedDeviceRoutes(api, authMiddleware)
 }

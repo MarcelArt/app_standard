@@ -1,3 +1,4 @@
+
 package routes
 
 import (
@@ -8,18 +9,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupUserRoutes(api fiber.Router, auth *middlewares.AuthMiddleware) {
-	h := api_handlers.NewUserHandler(
-		repositories.NewUserRepo(database.GetDB()),
-		repositories.NewAuthorizedDeviceRepo(database.GetDB()),
-	)
+func SetupAuthorizedDeviceRoutes(api fiber.Router, auth *middlewares.AuthMiddleware) {
+	h := api_handlers.NewAuthorizedDeviceHandler(repositories.NewAuthorizedDeviceRepo(database.GetDB()))
 
-	g := api.Group("/user")
+	g := api.Group("/authorized-device")
 	g.Get("/", auth.ProtectedAPI, h.Read)
 	g.Get("/:id", auth.ProtectedAPI, h.GetByID)
-	g.Post("/", h.Create)
-	g.Post("/login", h.Login)
-	g.Post("/refresh", h.Refresh)
+	g.Post("/", auth.ProtectedAPI, h.Create)
 	g.Put("/:id", auth.ProtectedAPI, h.Update)
 	g.Delete("/:id", auth.ProtectedAPI, h.Delete)
 }

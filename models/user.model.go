@@ -39,6 +39,10 @@ type LoginResponse struct {
 	RefreshToken string `json:"refreshToken"`
 }
 
+type RefreshInput struct {
+	RefreshToken string `json:"refreshToken"`
+}
+
 func (UserDTO) TableName() string {
 	return userTableName
 }

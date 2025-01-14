@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/MarcelArt/app_standard/config"
@@ -70,4 +71,10 @@ func ParseToken(t string) (jwt.MapClaims, error) {
 	}
 
 	return nil, jwt.ErrSignatureInvalid
+}
+
+func ClaimsNumberToString(i interface{}) string {
+	number := i.(float64)
+
+	return strconv.Itoa(int(number))
 }

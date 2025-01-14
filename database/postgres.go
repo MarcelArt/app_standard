@@ -44,6 +44,7 @@ func MigrateDB() {
 		models.Template{},
 		models.Process{},
 		models.User{},
+		models.AuthorizedDevice{},
 	)
 	fmt.Println("Database Migrated")
 }
@@ -53,6 +54,7 @@ func DropDB() {
 		&models.Template{},
 		&models.Process{},
 		models.User{},
+		models.AuthorizedDevice{},
 	)
 	fmt.Println("Database Droped")
 }
