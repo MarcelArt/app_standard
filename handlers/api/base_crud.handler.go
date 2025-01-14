@@ -4,17 +4,23 @@ import (
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/MarcelArt/app_standard/utils"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 type BaseCrudHandler[TModel any, TDto models.IDTO, TPage any] struct {
-	repo repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	repo      repositories.IBaseCrudRepo[TModel, TDto, TPage]
+	validator *validator.Validate
 }
 
 func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
 	var dto TDto
 
 	if err := c.BodyParser(&dto); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
+	if err := h.validator.Struct(dto); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
@@ -53,6 +59,10 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Update(c *fiber.Ctx) error {
 	var dto TDto
 
 	if err := c.BodyParser(&dto); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
+	if err := h.validator.Struct(dto); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 

@@ -8,6 +8,7 @@ import (
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/MarcelArt/app_standard/utils"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -22,7 +23,8 @@ type UserHandler struct {
 func NewUserHandler(repo repositories.IUserRepo, adRepo repositories.IAuthorizedDeviceRepo) *UserHandler {
 	return &UserHandler{
 		BaseCrudHandler: BaseCrudHandler[models.User, models.UserDTO, models.UserPage]{
-			repo: repo,
+			repo:      repo,
+			validator: validator.New(validator.WithRequiredStructEnabled()),
 		},
 		repo:   repo,
 		adRepo: adRepo,
@@ -44,6 +46,10 @@ func NewUserHandler(repo repositories.IUserRepo, adRepo repositories.IAuthorized
 func (h *UserHandler) Create(c *fiber.Ctx) error {
 	var user models.UserDTO
 	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
+	if err := h.BaseCrudHandler.validator.Struct(user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
@@ -144,6 +150,10 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
+	if err := h.BaseCrudHandler.validator.Struct(user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
 	userDB, err := h.repo.GetByUsernameOrEmail(user.Username)
 	if err != nil {
 		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
@@ -154,7 +164,7 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
-	accessToken, refreshToken, err := utils.GenerateTokenPair(userDB, user.IsRemeber)
+	accessToken, refreshToken, err := utils.GenerateTokenPair(userDB, user.IsRemember)
 	if err != nil {
 		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
@@ -190,6 +200,10 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 func (h *UserHandler) Refresh(c *fiber.Ctx) error {
 	var input models.RefreshInput
 	if err := c.BodyParser(&input); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
+	if err := h.BaseCrudHandler.validator.Struct(input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
