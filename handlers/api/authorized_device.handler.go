@@ -1,9 +1,9 @@
-
 package api_handlers
 
 import (
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,7 +15,8 @@ type AuthorizedDeviceHandler struct {
 func NewAuthorizedDeviceHandler(repo repositories.IAuthorizedDeviceRepo) *AuthorizedDeviceHandler {
 	return &AuthorizedDeviceHandler{
 		BaseCrudHandler: BaseCrudHandler[models.AuthorizedDevice, models.AuthorizedDeviceDTO, models.AuthorizedDevicePage]{
-			repo: repo,
+			repo:      repo,
+			validator: validator.New(validator.WithRequiredStructEnabled()),
 		},
 		repo: repo,
 	}
