@@ -3,18 +3,19 @@ package routes
 import (
 	"github.com/MarcelArt/app_standard/database"
 	api_handlers "github.com/MarcelArt/app_standard/handlers/api"
+	"github.com/MarcelArt/app_standard/middlewares"
 	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupUserRoutes(api fiber.Router) {
+func SetupUserRoutes(api fiber.Router, auth *middlewares.AuthMiddleware) {
 	h := api_handlers.NewUserHandler(repositories.NewUserRepo(database.GetDB()))
 
 	g := api.Group("/user")
-	g.Get("/", h.Read)
-	g.Get("/:id", h.GetByID)
+	g.Get("/", auth.ProtectedAPI, h.Read)
+	g.Get("/:id", auth.ProtectedAPI, h.GetByID)
 	g.Post("/", h.Create)
 	g.Post("/login", h.Login)
-	g.Put("/:id", h.Update)
-	g.Delete("/:id", h.Delete)
+	g.Put("/:id", auth.ProtectedAPI, h.Update)
+	g.Delete("/:id", auth.ProtectedAPI, h.Delete)
 }

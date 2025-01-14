@@ -1,6 +1,9 @@
 package routes
 
 import (
+	"github.com/MarcelArt/app_standard/database"
+	"github.com/MarcelArt/app_standard/middlewares"
+	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -17,8 +20,10 @@ func SetupRoutes(app *fiber.App) {
 		DeepLinking: false,
 	}))
 
+	authMiddleware := middlewares.NewAuthMiddleware(repositories.NewUserRepo(database.GetDB()))
+
 	api := app.Group("/api")
 	SetupTemplateRoutes(api)
 	SetupProcessRoutes(api)
-	SetupUserRoutes(api)
+	SetupUserRoutes(api, authMiddleware)
 }

@@ -55,3 +55,19 @@ func generateRefreshToken(user models.UserDTO, isRemember bool) (string, error) 
 
 	return t, err
 }
+
+func ParseToken(t string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(t, func(t *jwt.Token) (interface{}, error) {
+		return []byte(config.Env.JwtSecret), nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims, nil
+	}
+
+	return nil, jwt.ErrSignatureInvalid
+}
