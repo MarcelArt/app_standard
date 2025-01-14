@@ -41,8 +41,6 @@ func GetDB() *gorm.DB {
 
 func MigrateDB() {
 	db.AutoMigrate(
-		models.Template{},
-		models.Process{},
 		models.User{},
 		models.AuthorizedDevice{},
 	)
@@ -51,8 +49,6 @@ func MigrateDB() {
 
 func DropDB() {
 	db.Migrator().DropTable(
-		&models.Template{},
-		&models.Process{},
 		models.User{},
 		models.AuthorizedDevice{},
 	)

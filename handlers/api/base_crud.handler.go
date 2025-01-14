@@ -32,7 +32,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
 // @Tags CRUDs
 // @Accept json
 // @Produce json
-// @Param resources path string true "Resource route" Enums(template, process)
+// @Param resources path string true "Resource route" Enums(user, authorized-device)
 // @Param page query int false "Page"
 // @Param size query int false "Size"
 // @Param sort query string false "Sort"
