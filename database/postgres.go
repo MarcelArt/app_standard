@@ -43,6 +43,7 @@ func MigrateDB() {
 	db.AutoMigrate(
 		models.Template{},
 		models.Process{},
+		models.User{},
 	)
 	fmt.Println("Database Migrated")
 }
@@ -51,6 +52,7 @@ func DropDB() {
 	db.Migrator().DropTable(
 		&models.Template{},
 		&models.Process{},
+		models.User{},
 	)
 	fmt.Println("Database Droped")
 }

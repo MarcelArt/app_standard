@@ -20,4 +20,5 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 	SetupTemplateRoutes(api)
 	SetupProcessRoutes(api)
+	SetupUserRoutes(api)
 }
