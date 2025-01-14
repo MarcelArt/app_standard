@@ -28,6 +28,17 @@ type UserPage struct {
 	Email    string `json:"email" gorm:"unique;not null"`
 }
 
+type LoginInput struct {
+	Username  string `json:"username" gorm:"unique;not null"`
+	Password  string `json:"password" gorm:"not null"`
+	IsRemeber bool   `json:"isRemember"`
+}
+
+type LoginResponse struct {
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
+}
+
 func (UserDTO) TableName() string {
 	return userTableName
 }

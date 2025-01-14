@@ -1,4 +1,3 @@
-
 package routes
 
 import (
@@ -15,6 +14,7 @@ func SetupUserRoutes(api fiber.Router) {
 	g.Get("/", h.Read)
 	g.Get("/:id", h.GetByID)
 	g.Post("/", h.Create)
+	g.Post("/login", h.Login)
 	g.Put("/:id", h.Update)
 	g.Delete("/:id", h.Delete)
 }

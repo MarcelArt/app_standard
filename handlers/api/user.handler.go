@@ -10,6 +10,7 @@ import (
 
 type UserHandler struct {
 	BaseCrudHandler[models.User, models.UserDTO, models.UserPage]
+	repo repositories.IUserRepo
 }
 
 func NewUserHandler(repo repositories.IUserRepo) *UserHandler {
@@ -17,6 +18,7 @@ func NewUserHandler(repo repositories.IUserRepo) *UserHandler {
 		BaseCrudHandler: BaseCrudHandler[models.User, models.UserDTO, models.UserPage]{
 			repo: repo,
 		},
+		repo: repo,
 	}
 }
 
@@ -115,4 +117,43 @@ func (h *UserHandler) Delete(c *fiber.Ctx) error {
 // @Router /user/{id} [get]
 func (h *UserHandler) GetByID(c *fiber.Ctx) error {
 	return h.BaseCrudHandler.GetByID(c)
+}
+
+// Login is a function to login
+// @Summary Login User
+// @Description Login User
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param input body models.LoginInput true "Login"
+// @Success 200 {object} models.LoginResponse
+// @Failure 400 {string} string
+// @Failure 404 {string} string
+// @Failure 500 {string} string
+// @Router /user/login [post]
+func (h *UserHandler) Login(c *fiber.Ctx) error {
+	var user models.LoginInput
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
+	userDB, err := h.repo.GetByUsernameOrEmail(user.Username)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(userDB.Password), []byte(user.Password+userDB.Salt))
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+	}
+
+	accessToken, refreshToken, err := utils.GenerateTokenPair(userDB, user.IsRemeber)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.LoginResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	})
 }

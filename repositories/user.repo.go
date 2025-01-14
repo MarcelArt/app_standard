@@ -14,6 +14,7 @@ const userPageQuery = `
 
 type IUserRepo interface {
 	IBaseCrudRepo[models.User, models.UserDTO, models.UserPage]
+	GetByUsernameOrEmail(username string) (models.UserDTO, error)
 }
 
 type UserRepo struct {
@@ -27,4 +28,10 @@ func NewUserRepo(db *gorm.DB) *UserRepo {
 			pageQuery: userPageQuery,
 		},
 	}
+}
+
+func (r *UserRepo) GetByUsernameOrEmail(username string) (models.UserDTO, error) {
+	var user models.UserDTO
+	err := r.db.Where("username = ? OR email = ?", username, username).First(&user).Error
+	return user, err
 }
