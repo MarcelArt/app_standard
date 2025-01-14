@@ -99,7 +99,30 @@ func (h *UserHandler) Read(c *fiber.Ctx) error {
 // @Failure 500 {object} string
 // @Router /user/{id} [put]
 func (h *UserHandler) Update(c *fiber.Ctx) error {
-	return h.BaseCrudHandler.Update(c)
+	id := c.Params("id")
+	var user models.UserDTO
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
+	// if err := h.BaseCrudHandler.validator.Struct(user); err != nil {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	// }
+
+	if user.Password != "" {
+		user.Salt = utils.RandString(10)
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password+user.Salt), bcrypt.DefaultCost)
+		if err != nil {
+			return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
+		}
+		user.Password = string(hashedPassword)
+	}
+
+	if err := h.repo.Update(id, &user); err != nil {
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(user)
 }
 
 // Delete deletes an existing user
