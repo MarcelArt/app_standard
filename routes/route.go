@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/swagger"
 )
 
@@ -26,6 +27,8 @@ func SetupRoutes(app *fiber.App) {
 		URL:         "http://example.com/doc.json",
 		DeepLinking: false,
 	}))
+
+	app.Get("/metrics", monitor.New())
 
 	authMiddleware := middlewares.NewAuthMiddleware(repositories.NewUserRepo(database.GetDB()))
 
