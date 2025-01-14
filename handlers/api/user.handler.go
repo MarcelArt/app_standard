@@ -43,16 +43,16 @@ func (h *UserHandler) Create(c *fiber.Ctx) error {
 	user.Salt = utils.RandString(10)
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password+user.Salt), bcrypt.DefaultCost)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 	user.Password = string(hashedPassword)
 
 	id, err := h.repo.Create(user)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
-	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"ID": id})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"ID": id})
 }
 
 // Read retrieves a list of users
@@ -139,17 +139,17 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 
 	userDB, err := h.repo.GetByUsernameOrEmail(user.Username)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(userDB.Password), []byte(user.Password+userDB.Salt))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	accessToken, refreshToken, err := utils.GenerateTokenPair(userDB, user.IsRemeber)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(models.LoginResponse{

@@ -9,7 +9,7 @@ const userPageQuery = `
 	select 
 		username, 
 		email
-	from users;
+	from users
 `
 
 type IUserRepo interface {

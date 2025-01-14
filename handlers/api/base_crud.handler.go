@@ -3,6 +3,7 @@ package api_handlers
 import (
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
+	"github.com/MarcelArt/app_standard/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -19,7 +20,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Create(c *fiber.Ctx) error {
 
 	id, err := h.repo.Create(dto)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"ID": id})
@@ -56,7 +57,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Update(c *fiber.Ctx) error {
 	}
 
 	if err := h.repo.Update(id, &dto); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(dto)
@@ -68,7 +69,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) Delete(c *fiber.Ctx) error {
 	model, err := h.repo.Delete(id)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(model)
@@ -80,7 +81,7 @@ func (h *BaseCrudHandler[TModel, TDto, TPage]) GetByID(c *fiber.Ctx) error {
 	model, err := h.repo.GetByID(id)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(err.Error())
+		return c.Status(utils.StatusCodeByError(err)).JSON(err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(model)
