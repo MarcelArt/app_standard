@@ -17,6 +17,7 @@ import (
 
 type ${modelName}Handler struct {
 	BaseCrudHandler[models.${modelName}, models.${modelName}DTO, models.${modelName}Page]
+	repo repositories.I${modelName}Repo
 }
 
 func New${modelName}Handler(repo repositories.I${modelName}Repo) *${modelName}Handler {
@@ -24,6 +25,7 @@ func New${modelName}Handler(repo repositories.I${modelName}Repo) *${modelName}Ha
 		BaseCrudHandler: BaseCrudHandler[models.${modelName}, models.${modelName}DTO, models.${modelName}Page]{
 			repo: repo,
 		},
+		repo: repo,
 	}
 }
 
