@@ -8,6 +8,7 @@ import (
 	"github.com/MarcelArt/app_standard/middlewares"
 	"github.com/MarcelArt/app_standard/repositories"
 	api_routes "github.com/MarcelArt/app_standard/routes/api"
+	view_routes "github.com/MarcelArt/app_standard/routes/view"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -27,6 +28,8 @@ func SetupRoutes(app *fiber.App) {
 	app.Static("/scripts", "./public/static/scripts")
 
 	app.Get("/", view_handlers.HelloWorldView)
+
+	view_routes.SetupDevToolsRoutes(app)
 
 	app.Get("/swagger/*", swagger.HandlerDefault)     // default
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
