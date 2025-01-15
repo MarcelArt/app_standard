@@ -1,4 +1,4 @@
-package routes
+package api_routes
 
 import (
 	"github.com/MarcelArt/app_standard/database"

@@ -1,6 +1,8 @@
 module github.com/MarcelArt/app_standard
 
-go 1.22.2
+go 1.23
+
+toolchain go1.23.4
 
 require (
 	github.com/gofiber/swagger v1.1.0
@@ -11,6 +13,7 @@ require (
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/a-h/templ v0.3.819 // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect

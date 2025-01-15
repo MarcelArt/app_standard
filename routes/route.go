@@ -4,8 +4,10 @@ import (
 	"time"
 
 	"github.com/MarcelArt/app_standard/database"
+	view_handlers "github.com/MarcelArt/app_standard/handlers/view"
 	"github.com/MarcelArt/app_standard/middlewares"
 	"github.com/MarcelArt/app_standard/repositories"
+	api_routes "github.com/MarcelArt/app_standard/routes/api"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -22,6 +24,8 @@ func SetupRoutes(app *fiber.App) {
 		Expiration: 30 * time.Second,
 	}))
 
+	app.Get("/", view_handlers.HelloWorldView)
+
 	app.Get("/swagger/*", swagger.HandlerDefault)     // default
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
 		URL:         "http://example.com/doc.json",
@@ -33,6 +37,6 @@ func SetupRoutes(app *fiber.App) {
 	authMiddleware := middlewares.NewAuthMiddleware(repositories.NewUserRepo(database.GetDB()))
 
 	api := app.Group("/api")
-	SetupUserRoutes(api, authMiddleware)
-	SetupAuthorizedDeviceRoutes(api, authMiddleware)
+	api_routes.SetupUserRoutes(api, authMiddleware)
+	api_routes.SetupAuthorizedDeviceRoutes(api, authMiddleware)
 }
