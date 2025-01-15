@@ -10,5 +10,7 @@ import (
 func SetupDevToolsRoutes(app *fiber.App) {
 	h := view_handlers.NewTableHandler(repositories.NewTableRepo(database.GetDB()))
 
-	app.Get("/dev-tools", h.Index)
+	g := app.Group("/dev-tools")
+	g.Get("/", h.Index)
+	g.Post("/drop", h.DropAll)
 }

@@ -39,18 +39,22 @@ func GetDB() *gorm.DB {
 	return db
 }
 
-func MigrateDB() {
-	db.AutoMigrate(
+func MigrateDB() error {
+	err := db.AutoMigrate(
 		models.User{},
 		models.AuthorizedDevice{},
 	)
 	fmt.Println("Database Migrated")
+
+	return err
 }
 
-func DropDB() {
-	db.Migrator().DropTable(
+func DropDB() error {
+	err := db.Migrator().DropTable(
 		models.User{},
 		models.AuthorizedDevice{},
 	)
 	fmt.Println("Database Droped")
+
+	return err
 }

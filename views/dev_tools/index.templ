@@ -4,6 +4,9 @@ import "github.com/MarcelArt/app_standard/views/layout"
 
 templ Index(tables []string) {
     @layout.Main() {
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Create New</button>
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">Migrate Models</button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4" hx-target="#toast" hx-post="/dev-tools/drop">Drop All</button>
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
             <tr>

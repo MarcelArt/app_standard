@@ -43,7 +43,7 @@ func Index(tables []string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<table class=\"min-w-full divide-y divide-gray-200\"><thead class=\"bg-gray-50\"><tr><th scope=\"col\" class=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">Table</th></tr></thead> <tbody class=\"bg-white divide-y divide-gray-200\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<button class=\"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4\">Create New</button> <button class=\"bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4\">Migrate Models</button> <button class=\"bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4\" hx-target=\"#toast\" hx-post=\"/dev-tools/drop\">Drop All</button><table class=\"min-w-full divide-y divide-gray-200\"><thead class=\"bg-gray-50\"><tr><th scope=\"col\" class=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">Table</th></tr></thead> <tbody class=\"bg-white divide-y divide-gray-200\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -55,7 +55,7 @@ func Index(tables []string) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(table)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/dev_tools/index.templ`, Line: 19, Col: 27}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/dev_tools/index.templ`, Line: 22, Col: 27}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
