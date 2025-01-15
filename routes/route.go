@@ -24,6 +24,8 @@ func SetupRoutes(app *fiber.App) {
 		Expiration: 30 * time.Second,
 	}))
 
+	app.Static("/scripts", "./public/static/scripts")
+
 	app.Get("/", view_handlers.HelloWorldView)
 
 	app.Get("/swagger/*", swagger.HandlerDefault)     // default
