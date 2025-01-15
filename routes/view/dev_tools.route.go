@@ -13,4 +13,5 @@ func SetupDevToolsRoutes(app *fiber.App) {
 	g := app.Group("/dev-tools")
 	g.Get("/", h.Index)
 	g.Post("/drop", h.DropAll)
+	g.Post("/migrate", h.MigrateModels)
 }

@@ -66,7 +66,7 @@ func Toast(message string, status string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"mb-4 p-2 bg-blue-200 text-blue-800 rounded\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"mb-4 p-2 bg-blue-200 text-blue-800 rounded\" hx-get=\"#\" hx-trigger=\"load delay:1s\" hx-swap=\"delete\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
