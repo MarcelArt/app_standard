@@ -1,7 +1,11 @@
 package view_handlers
 
 import (
+	"log"
+	"strconv"
+
 	"github.com/MarcelArt/app_standard/database"
+	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
 	"github.com/MarcelArt/app_standard/utils"
 	"github.com/MarcelArt/app_standard/views/components"
@@ -42,4 +46,28 @@ func (h *TableHandler) MigrateModels(c *fiber.Ctx) error {
 	}
 
 	return utils.Render(c, components.Toast("Database Droped", "success"))
+}
+
+func (h *TableHandler) CreateView(c *fiber.Ctx) error {
+	return utils.Render(c, dev_tools.Create())
+}
+
+func (h *TableHandler) AddField(c *fiber.Ctx) error {
+	i := c.Params("i")
+	index, err := strconv.Atoi(i)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	return utils.Render(c, components.ModelBuilderForm(index))
+}
+
+func (h *TableHandler) Create(c *fiber.Ctx) error {
+	var model models.ModelBuilderRequest
+	if err := c.BodyParser(&model); err != nil {
+		log.Println(err.Error())
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	return c.SendStatus(fiber.StatusOK)
 }
