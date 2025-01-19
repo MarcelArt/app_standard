@@ -8,5 +8,6 @@ type ModelBuilder struct {
 }
 
 type ModelBuilderRequest struct {
-	Model ModelBuilder `json:"model_builder"`
+	ModelName string `json:"modelName"`
+	// Model ModelBuilder `json:"model_builder"`
 }

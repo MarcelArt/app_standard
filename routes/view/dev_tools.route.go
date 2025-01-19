@@ -14,6 +14,7 @@ func SetupDevToolsRoutes(app *fiber.App) {
 	g.Get("/", h.Index)
 	g.Get("/create", h.CreateView)
 	g.Get("/create/add/:i", h.AddField)
+
 	g.Post("/create", h.Create)
 	g.Post("/drop", h.DropAll)
 	g.Post("/migrate", h.MigrateModels)

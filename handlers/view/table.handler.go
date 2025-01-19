@@ -7,6 +7,7 @@ import (
 	"github.com/MarcelArt/app_standard/database"
 	"github.com/MarcelArt/app_standard/models"
 	"github.com/MarcelArt/app_standard/repositories"
+	"github.com/MarcelArt/app_standard/scaffold"
 	"github.com/MarcelArt/app_standard/utils"
 	"github.com/MarcelArt/app_standard/views/components"
 	"github.com/MarcelArt/app_standard/views/dev_tools"
@@ -68,6 +69,17 @@ func (h *TableHandler) Create(c *fiber.Ctx) error {
 		log.Println(err.Error())
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
+
+	modelName := model.ModelName
+
+	modelCamel := scaffold.ToCamelCase(modelName)
+	modelSnake := scaffold.ToSeparateByCharLowered(modelCamel, '_')
+	handlerRoute := scaffold.ToSeparateByCharLowered(modelName, '-')
+	scaffold.ScaffoldModel(modelName, modelCamel, modelSnake)
+	scaffold.ScaffoldRepo(modelName, modelCamel)
+	scaffold.ScaffoldHandler(modelName, handlerRoute)
+	scaffold.ScaffoldRoute(modelName, handlerRoute)
+	log.Println("Successfully scaffolded")
 
 	return c.SendStatus(fiber.StatusOK)
 }
