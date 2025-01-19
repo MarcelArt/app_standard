@@ -3,6 +3,7 @@ package routes
 import (
 	"time"
 
+	"github.com/MarcelArt/app_standard/config"
 	"github.com/MarcelArt/app_standard/database"
 	view_handlers "github.com/MarcelArt/app_standard/handlers/view"
 	"github.com/MarcelArt/app_standard/middlewares"
@@ -29,7 +30,9 @@ func SetupRoutes(app *fiber.App) {
 
 	app.Get("/", view_handlers.HelloWorldView)
 
-	view_routes.SetupDevToolsRoutes(app)
+	if config.Env.ServerENV != "prod" {
+		view_routes.SetupDevToolsRoutes(app)
+	}
 
 	app.Get("/swagger/*", swagger.HandlerDefault)     // default
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
