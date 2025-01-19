@@ -29,7 +29,7 @@ func Main() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><title>My App</title><script src=\"/scripts/tailwind.js\"></script><script src=\"/scripts/htmx.min.js\"></script><script src=\"/scripts/response-targets.js\"></script></head><body class=\"bg-gray-100\"><div class=\"bg-blue-500 p-4\"><h1 class=\"text-white text-2xl\">My App</h1></div><div class=\"container mx-auto mt-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><title>Go Fiber CRUD</title><script src=\"/scripts/tailwind.js\"></script><script src=\"/scripts/htmx.min.js\"></script><script src=\"/scripts/response-targets.js\"></script></head><body class=\"bg-gray-100\"><div class=\"bg-blue-500 p-4\"><h1 class=\"text-white text-2xl\">Go Fiber CRUD</h1></div><div class=\"container mx-auto mt-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
